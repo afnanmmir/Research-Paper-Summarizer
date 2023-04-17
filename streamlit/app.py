@@ -89,7 +89,7 @@ def generate_summary():
 
     # compute predictions
     # outputs = model.generate(**inputs, do_sample=True, temperature=temperature, max_length=max_output_length)
-    outputs = model.generate(**inputs, do_sample=True, max_length=max_output_length)
+    outputs = model.generate(**inputs, do_sample=True, max_length=max_output_length, early_stopping=True, num_beams=8, length_penalty=2.0, no_repeat_ngram_size=2, min_length=64)
     print("outputs", outputs)
     decoded_outputs = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
     print("Decoded_outputs", decoded_outputs)

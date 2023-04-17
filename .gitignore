@@ -133,3 +133,5 @@ Playground/
 # stuff in streamlit
 *.rar
 /streamlit/plos_readability_ctrl_sum_corpus
+plos_readability_ctrl_sum_corpus/
+.DS_Store
