@@ -48,92 +48,47 @@
 
 \section{Introduction}
 
-Research papers are groundbreaking in terms of presenting new findings, theories, and perspectives, making them essential for scientific breakthroughs. However, the knowledge presented in research papers is often inaccessible to the general public for various reasons. Reasons include putting research papers behind paywalls, using dense technical language that the average person cannot understand, and sometimes simply being far too long. This discourages those in the general public who may be interested in the topic of the research paper or those who would like to enter the research area presented in the paper from reading the paper. Though the first issue is not one that can be solved without a change in the current publishing system, the latter two issues can be addressed by using Natural Language Processing (NLP) methods to automatically generate summaries of research papers that are easier to read than the average technical abstract. This would involve finetuning a pretrained model on a dataset to convert the paper and its technical abstract into a plain language summary, which, to some extent, would take down the barrier of technical language and length.
+\indent \indent Research papers are groundbreaking in terms of presenting new findings, theories, and perspectives, making them essential for scientific breakthroughs. However, the knowledge presented in research papers is often inaccessible to the general public for various reasons. Reasons include putting research papers behind paywalls, using dense technical language that the average person cannot understand, and sometimes simply being far too long. This discourages those in the general public who may be interested in the topic of the research paper or those who would like to enter the research area presented in the paper from reading the paper. Though the first issue is not one that can be solved without a change in the current publishing system, the latter two issues can be addressed by using Natural Language Processing (NLP) methods to automatically generate summaries of research papers that are easier to read than the average technical abstract. This would involve finetuning a pretrained model on a dataset to convert the paper and its technical abstract into a plain language summary, which, to some extent, would take down the barrier of technical language and length.
 \section{Dataset and Resources}
 \subsection{Dataset}
-To train and evaluate the model, a dataset of research papers in the biomedical domain was used. This dataset contains 28,124 research papers, each with an associated technical abstract and a plain language summary. The technical abstract is the abstract that is typically found in research papers, but the plain language summary is a summary that is written by the author, where they are required to highlight how the work fits into a broader context in a simple manner without complex acronyms and terminology \cite{luo2022readability}. The dataset was split into the train set, the validation set, and the test set, with 26,124, 1,000, and 1,000 papers respectively. The dataset can be found \href{https://www.dropbox.
+\indent \indent To train and evaluate the model, a dataset of research papers in the biomedical domain was used. This dataset contains 28,124 research papers, each with an associated technical abstract and a plain language summary. The technical abstract is the abstract that is typically found in research papers, but the plain language summary is a summary that is written by the author, where they are required to highlight how the work fits into a broader context in a simple manner without complex acronyms and terminology \cite{luo2022readability}. The dataset was split into the train set, the validation set, and the test set, with 26,124, 1,000, and 1,000 papers respectively. The dataset can be found \href{https://www.dropbox.
 com/s/huwm01glsk9fou0/plos_readability_ctrl_sum_
 corpus.rar?dl=0}{here}.
 
 \subsection{Model Resources}
 
-To obtain the resources to load our pretrained model and finetune it, \href{https://huggingface.co/}{HuggingFace} was used, which is an online hub where users and/or companies are able to publish their trained PyTorch or TensorFlow models for others to use. HuggingFace provides a high-level API that allows us to load the model, load the dataset in a proper format, and train the model without worrying about the inner workings of the model.
+\indent \indent To obtain the resources to load our pretrained model and finetune it, \href{https://huggingface.co/}{HuggingFace} was used, which is an online hub where users and/or companies are able to publish their trained PyTorch or TensorFlow models for others to use. HuggingFace provides a high-level API that allows us to load the model, load the dataset in a proper format, and train the model without worrying about the inner workings of the model.
 
 In order to train the model efficiently, training on a local machine would not suffice. For this purpose, \href{colab.research.google.com}{Google Colab} was used, where the access of a GPU is provided for free for some limited amount of time.
 
-\section{Translation of non-English Terms}
+\section{Methodology}
 
-It is also advised to supplement non-English characters and terms
-with appropriate transliterations and/or translations
-since not all readers understand all such characters and terms.
-Inline transliteration or translation can be represented in
-the order of: original-form transliteration ``translation''.
+\subsection{Model Selection}
+\indent \indent For the summarization task, a couple of model architectures were researched and explored. The final architecture that was chosen was an encoder-decoder transformer model; namely the T5 (Text-to-Text Transfer Transformer) model \cite{raffel2020exploring}. This model was pretrained on a mixture of self-supervised and supervised tasks over a large text corpus, which made it a well-performing model for a variety of tasks out of the box. All that had to be done was the prepend the input with the given task (e.g., for summarization: "summarize: ", for translation: "translate English to German: "). The model was chosen because of its ease of use as well as its performance on the general summarization task.
 
-\section{Length of Submission}
-\label{sec:length}
+\subsection{Model Finetuning/Training}
+\indent \indent To finetune the model, first the data had to be prepared. The initial approach was to use the LongT5 model, which was specialized for tasks with long inputs, and provide as much of each research paper as possible as the input to the model \cite{guo2022longt5}. However, due to the limited resources provided by Google Colab, it became apparent that using whole research papers as the input to the model would not be possible without running out of GPU memory or truncating our inputs to the point that significant information was lost. Therefore, the approach was changed to use the base T5 model and provide the technical abstract as the input to hopefully create a readable summary.
 
-The NAACL-HLT 2019 main conference accepts submissions of long papers and
-short papers.
- Long papers may consist of up to eight (8) pages of
-content plus unlimited pages for references. Upon acceptance, final
-versions of long papers will be given one additional page -- up to nine (9)
-pages of content plus unlimited pages for references -- so that reviewers' comments
-can be taken into account. Short papers may consist of up to four (4)
-pages of content, plus unlimited pages for references. Upon
-acceptance, short papers will be given five (5) pages in the
-proceedings and unlimited pages for references. 
-For both long and short papers, all illustrations and tables that are part
-of the main text must be accommodated within these page limits, observing
-the formatting instructions given in the present document. Papers that do not conform to the specified length and formatting requirements are subject to be rejected without review.
 
-NAACL-HLT 2019 does encourage the submission of additional material that is relevant to the reviewers but not an integral part of the paper. There are two such types of material: appendices, which can be read, and non-readable supplementary materials, often data or code.  Do not include this additional material in the same document as your main paper. Additional material must be submitted as one or more separate files, and must adhere to the same anonymity guidelines as the main paper. The paper must be self-contained: it is optional for reviewers to look at the supplementary material. Papers should not refer, for further detail, to documents, code or data resources that are not available to the reviewers. Refer to Appendix~\ref{sec:appendix} and Appendix~\ref{sec:supplemental} for further information. 
+The data was converted into input tokens that are digestable by the model using the HuggingFace Tokenizer API. The model was then trained using the HuggingFace Trainer API, which allows for easy training of a model on a dataset\footnote{Both of the API's can are found in the Transformers library: \url{https://github.com/huggingface/transformers}}. The model was trained for 3 epochs, with a learning rate of 2e-5, a maximum input length of 1024 tokens, and a maximum output length of 256 tokens. The training for this would take around 5 hours in the Google Colab environment.
 
-Workshop chairs may have different rules for allowed length and
-whether supplemental material is welcome. As always, the respective
-call for papers is the authoritative source.
+\subsection{Summary Generation}
+\indent \indent Once the model was finetuned, it was used to generate summaries for the test set. Initially, the default parameters were used for the generation of the summaries; however, using these parameters led to the generation of summaries that were not very readable for many reasons. One main reason was the constant generation of repeated tokens as seen in the following example: \\
+\texttt{Schistosoma mansoni is one of the major tropical infectious diseases responsible for tropical infectious diseases caused by Schistosoma mansoni Schistosoma Mansoni Schistosoma Mansoni Schistosoma Mansoni Schistosoma Mansoni Schistosoma Mansoni Schistosoma Mansoni Schistosoma Mansoni Schistosoma Mansoni Schistosoma Mansoni}. \\
+This case happened quite often in the test set. To mitigate these issues, the following parameters were used for the generation of the summaries: \\
+\texttt{max\_length=256, min\_length=64, no\_repeat\_ngram\_size=2, num\_beams=4, early\_stopping=True, length\_penalty=2.0}. \\
+Parameters like \texttt{length\_penalty} and \texttt{early\_stopping} prevented the model from generating summaries that were too long because the longer the summaries went, the more susceptible they were to becoming unreadable. The \texttt{no\_repeat\_ngrame\_size} parameter was implemented to make sure that the model did not generate the same token over and over again. With the implementation of these parameters, the summaries generated by the model were far more readable and coherent.
 
-\section*{Acknowledgments}
 
-The acknowledgments should go immediately before the references.  Do
-not number the acknowledgments section. Do not include this section
-when submitting your paper for review. \\
+\section{Results and Evaluation}
 
-\noindent {\bf Preparing References:} \\
-Include your own bib file like this:
-\verb|\bibliographystyle{acl_natbib}|
-\verb|\bibliography{naaclhlt2019}| 
-
-where \verb|naaclhlt2019| corresponds to a naaclhlt2019.bib file.
 \bibliography{naaclhlt2019}
 \bibliographystyle{acl_natbib}
 
 \appendix
 
-\section{Appendices}
-\label{sec:appendix}
-Appendices are material that can be read, and include lemmas, formulas, proofs, and tables that are not critical to the reading and understanding of the paper. 
-Appendices should be {\bf uploaded as supplementary material} when submitting the paper for review. Upon acceptance, the appendices come after the references, as shown here. Use
-\verb|\appendix| before any appendix section to switch the section
-numbering over to letters.
-
-
-\section{Supplemental Material}
-\label{sec:supplemental}
-Submissions may include non-readable supplementary material used in the work and described in the paper. Any accompanying software and/or data should include licenses and documentation of research review as appropriate. Supplementary material may report preprocessing decisions, model parameters, and other details necessary for the replication of the experiments reported in the paper. Seemingly small preprocessing decisions can sometimes make a large difference in performance, so it is crucial to record such decisions to precisely characterize state-of-the-art methods. 
-
-Nonetheless, supplementary material should be supplementary (rather
-than central) to the paper. {\bf Submissions that misuse the supplementary 
-material may be rejected without review.}
-Supplementary material may include explanations or details
-of proofs or derivations that do not fit into the paper, lists of
-features or feature templates, sample inputs and outputs for a system,
-pseudo-code or source code, and data. (Source code and data should
-be separate uploads, rather than part of the paper).
-
-The paper should not rely on the supplementary material: while the paper
-may refer to and cite the supplementary material and the supplementary material will be available to the
-reviewers, they will not be asked to review the
-supplementary material.
+\section{Group Work Split}
+For this project, Afnan took responsibility of formatting the data properly to be ingested by the model. He also took responsibility of training the model on Google Colab. Jaykumar took responsibility of generating the summaries for the test set, which also included tuning the parameters of the finetuned model to generate the most coherent model. He also worked on creating the demo for the class presentation. Both Afnan and Jaykumar worked on performing the evaluation of the summaries generated, and they both worked on the presentation and writing the
 
 
 \end{document}
