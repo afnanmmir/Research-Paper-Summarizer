@@ -50,10 +50,10 @@ def generate_summary():
 
     # tokenize text
     inputs = ["summarize: " + st_text_area]
-    print(inputs)
+    # print(inputs)
     inputs = tokenizer(inputs, return_tensors="pt", max_length=max_input_length, truncation=True)
     print("Tokenized inputs: ")
-    print(inputs)
+    # print(inputs)
     # inputs = tokenizer(inputs, return_tensors="pt")
 
     # # compute span boundaries
@@ -90,11 +90,11 @@ def generate_summary():
     # compute predictions
     # outputs = model.generate(**inputs, do_sample=True, temperature=temperature, max_length=max_output_length)
     outputs = model.generate(**inputs, do_sample=True, max_length=max_output_length, early_stopping=True, num_beams=8, length_penalty=2.0, no_repeat_ngram_size=2, min_length=64)
-    print("outputs", outputs)
+    # print("outputs", outputs)
     decoded_outputs = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
-    print("Decoded_outputs", decoded_outputs)
+    # print("Decoded_outputs", decoded_outputs)
     predicted_summaries = nltk.sent_tokenize(decoded_outputs.strip())
-    print("Predicted summaries", predicted_summaries)
+    # print("Predicted summaries", predicted_summaries)
     # decoded_outputs = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     # predicted_summaries = [nltk.sent_tokenize(decoded_output.strip())[0] for decoded_output in decoded_outputs]
 
@@ -108,8 +108,7 @@ if 'summaries' not in st.session_state:
     st.session_state.summaries = []
 
 if len(st.session_state.summaries) > 0:
-    print("In summaries if")
+    # print("In summaries if")
     with st.container():
         st.subheader("Generated summaries")
-        for summary in st.session_state.summaries:
-            st.markdown("__" + summary + "__")
+        st.markdown(f"{' '.join(st.session_state.summaries)}")

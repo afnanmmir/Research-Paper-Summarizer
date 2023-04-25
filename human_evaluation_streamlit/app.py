@@ -49,10 +49,10 @@ def display_summaries(generated_summary, actual_summary):
         st.session_state.left_summary = generated_summary
         st.session_state.right_summary = actual_summary
         with col1.container():
-            st.markdown("Generated summary: "+ st.session_state.left_summary)
+            st.markdown(st.session_state.left_summary)
             st.button("Left", on_click=record_left_button)
         with col2.container():
-            st.write("Actual Summary: " + st.session_state.right_summary)
+            st.write(st.session_state.right_summary)
             st.button("Right", on_click=record_right_button)
         st.session_state.window_to_summary["left"] = "generated"
         st.session_state.window_to_summary["right"] = "actual"
@@ -60,10 +60,10 @@ def display_summaries(generated_summary, actual_summary):
         st.session_state.left_summary = actual_summary
         st.session_state.right_summary = generated_summary
         with col1.container():
-            st.markdown("Actual Summary: " + actual_summary)
+            st.markdown(st.session_state.left_summary)
             st.button("Left", on_click=record_left_button)
         with col2.container():
-            st.markdown("Generated summary: "+ st.session_state.right_summary)
+            st.markdown(st.session_state.right_summary)
             st.button("Right", on_click=record_right_button)
         st.session_state.window_to_summary["left"] = "actual"
         st.session_state.window_to_summary["right"] = "generated"

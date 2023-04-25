@@ -1,0 +1,139 @@
+%
+% File naacl2019.tex
+%
+%% Based on the style files for ACL 2018 and NAACL 2018, which were
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{naaclhlt2019}
+\usepackage{times}
+\usepackage{latexsym}
+% \usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+\usepackage{url}
+
+\aclfinalcopy % Uncomment this line for the final submission
+%\def\aclpaperid{***} %  Enter the acl Paper ID here
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B{\sc ib}\TeX}
+
+\title{Research Paper Summarizer}
+
+\author{Afnan Mir \\
+  amm23523 \\
+  {\tt afnanmir@utexas.edu} \\\And
+  Jaykumar Patel \\
+  jnp2369 \\
+  {\tt patel.jay4802@utexas.edu} \\}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  In this report, we aim to improve accessibility of information presented in complex research papers by using Natural Language Processing (NLP) methods to automatically generate summaries of research papers that are easier to read than the average technical abstract. A dataset of research papers in the medical field which have a technical abstract as well as a plain language summary associated with each paper was used to finetune a pretrained T5 model. The research paper and the technical abstract were used as inputs to the model, and the plain language summary was used as the target output. The finetuned model was evaluated using the ROUGE metric for summarization as well as various readability metrics. Our code can be found \href{https://github.com/afnanmmir/Research-Paper-Summarizer}{here}.
+\end{abstract}
+
+\section{Introduction}
+
+Research papers are groundbreaking in terms of presenting new findings, theories, and perspectives, making them essential for scientific breakthroughs. However, the knowledge presented in research papers is often inaccessible to the general public for various reasons. Reasons include putting research papers behind paywalls, using dense technical language that the average person cannot understand, and sometimes simply being far too long. This discourages those in the general public who may be interested in the topic of the research paper or those who would like to enter the research area presented in the paper from reading the paper. Though the first issue is not one that can be solved without a change in the current publishing system, the latter two issues can be addressed by using Natural Language Processing (NLP) methods to automatically generate summaries of research papers that are easier to read than the average technical abstract. This would involve finetuning a pretrained model on a dataset to convert the paper and its technical abstract into a plain language summary, which, to some extent, would take down the barrier of technical language and length.
+\section{Dataset and Resources}
+\subsection{Dataset}
+To train and evaluate the model, a dataset of research papers in the biomedical domain was used. This dataset contains 28,124 research papers, each with an associated technical abstract and a plain language summary. The technical abstract is the abstract that is typically found in research papers, but the plain language summary is a summary that is written by the author, where they are required to highlight how the work fits into a broader context in a simple manner without complex acronyms and terminology \cite{luo2022readability}. The dataset was split into the train set, the validation set, and the test set, with 26,124, 1,000, and 1,000 papers respectively. The dataset can be found \href{https://www.dropbox.
+com/s/huwm01glsk9fou0/plos_readability_ctrl_sum_
+corpus.rar?dl=0}{here}.
+
+\subsection{Model Resources}
+
+To obtain the resources to load our pretrained model and finetune it, \href{https://huggingface.co/}{HuggingFace} was used, which is an online hub where users and/or companies are able to publish their trained PyTorch or TensorFlow models for others to use. HuggingFace provides a high-level API that allows us to load the model, load the dataset in a proper format, and train the model without worrying about the inner workings of the model.
+
+In order to train the model efficiently, training on a local machine would not suffice. For this purpose, \href{colab.research.google.com}{Google Colab} was used, where the access of a GPU is provided for free for some limited amount of time.
+
+\section{Translation of non-English Terms}
+
+It is also advised to supplement non-English characters and terms
+with appropriate transliterations and/or translations
+since not all readers understand all such characters and terms.
+Inline transliteration or translation can be represented in
+the order of: original-form transliteration ``translation''.
+
+\section{Length of Submission}
+\label{sec:length}
+
+The NAACL-HLT 2019 main conference accepts submissions of long papers and
+short papers.
+ Long papers may consist of up to eight (8) pages of
+content plus unlimited pages for references. Upon acceptance, final
+versions of long papers will be given one additional page -- up to nine (9)
+pages of content plus unlimited pages for references -- so that reviewers' comments
+can be taken into account. Short papers may consist of up to four (4)
+pages of content, plus unlimited pages for references. Upon
+acceptance, short papers will be given five (5) pages in the
+proceedings and unlimited pages for references. 
+For both long and short papers, all illustrations and tables that are part
+of the main text must be accommodated within these page limits, observing
+the formatting instructions given in the present document. Papers that do not conform to the specified length and formatting requirements are subject to be rejected without review.
+
+NAACL-HLT 2019 does encourage the submission of additional material that is relevant to the reviewers but not an integral part of the paper. There are two such types of material: appendices, which can be read, and non-readable supplementary materials, often data or code.  Do not include this additional material in the same document as your main paper. Additional material must be submitted as one or more separate files, and must adhere to the same anonymity guidelines as the main paper. The paper must be self-contained: it is optional for reviewers to look at the supplementary material. Papers should not refer, for further detail, to documents, code or data resources that are not available to the reviewers. Refer to Appendix~\ref{sec:appendix} and Appendix~\ref{sec:supplemental} for further information. 
+
+Workshop chairs may have different rules for allowed length and
+whether supplemental material is welcome. As always, the respective
+call for papers is the authoritative source.
+
+\section*{Acknowledgments}
+
+The acknowledgments should go immediately before the references.  Do
+not number the acknowledgments section. Do not include this section
+when submitting your paper for review. \\
+
+\noindent {\bf Preparing References:} \\
+Include your own bib file like this:
+\verb|\bibliographystyle{acl_natbib}|
+\verb|\bibliography{naaclhlt2019}| 
+
+where \verb|naaclhlt2019| corresponds to a naaclhlt2019.bib file.
+\bibliography{naaclhlt2019}
+\bibliographystyle{acl_natbib}
+
+\appendix
+
+\section{Appendices}
+\label{sec:appendix}
+Appendices are material that can be read, and include lemmas, formulas, proofs, and tables that are not critical to the reading and understanding of the paper. 
+Appendices should be {\bf uploaded as supplementary material} when submitting the paper for review. Upon acceptance, the appendices come after the references, as shown here. Use
+\verb|\appendix| before any appendix section to switch the section
+numbering over to letters.
+
+
+\section{Supplemental Material}
+\label{sec:supplemental}
+Submissions may include non-readable supplementary material used in the work and described in the paper. Any accompanying software and/or data should include licenses and documentation of research review as appropriate. Supplementary material may report preprocessing decisions, model parameters, and other details necessary for the replication of the experiments reported in the paper. Seemingly small preprocessing decisions can sometimes make a large difference in performance, so it is crucial to record such decisions to precisely characterize state-of-the-art methods. 
+
+Nonetheless, supplementary material should be supplementary (rather
+than central) to the paper. {\bf Submissions that misuse the supplementary 
+material may be rejected without review.}
+Supplementary material may include explanations or details
+of proofs or derivations that do not fit into the paper, lists of
+features or feature templates, sample inputs and outputs for a system,
+pseudo-code or source code, and data. (Source code and data should
+be separate uploads, rather than part of the paper).
+
+The paper should not rely on the supplementary material: while the paper
+may refer to and cite the supplementary material and the supplementary material will be available to the
+reviewers, they will not be asked to review the
+supplementary material.
+
+
+\end{document}

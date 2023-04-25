@@ -135,3 +135,12 @@ Playground/
 /streamlit/plos_readability_ctrl_sum_corpus
 plos_readability_ctrl_sum_corpus/
 .DS_Store
+results.txt
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
