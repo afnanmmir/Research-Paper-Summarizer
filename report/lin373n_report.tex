@@ -17,6 +17,7 @@
 \usepackage{latexsym}
 % \usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
 \usepackage{url}
+\usepackage{graphicx}
 
 \aclfinalcopy % Uncomment this line for the final submission
 %\def\aclpaperid{***} %  Enter the acl Paper ID here
@@ -43,7 +44,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-  In this report, we aim to improve accessibility of information presented in complex research papers by using Natural Language Processing (NLP) methods to automatically generate summaries of research papers that are easier to read than the average technical abstract. A dataset of research papers in the medical field which have a technical abstract as well as a plain language summary associated with each paper was used to finetune a pretrained T5 model. The research paper and the technical abstract were used as inputs to the model, and the plain language summary was used as the target output. The finetuned model was evaluated using the ROUGE metric for summarization as well as various readability metrics. Our code can be found \href{https://github.com/afnanmmir/Research-Paper-Summarizer}{here}.
+  In this report, we aim to improve accessibility of information presented in complex research papers by using Natural Language Processing (NLP) methods to automatically generate summaries of research papers that are easier to read than the average technical abstract. A dataset of research papers in the medical field which have a technical abstract as well as a plain language summary associated with each paper was used to finetune a pretrained T5 model. The research paper and the technical abstract were used as inputs to the model, and the plain language summary was used as the target output. The finetuned model was evaluated using the ROUGE metric for summarization as well as various readability metrics such as Flesch and Dale Chall. Human evaluation was also used. Our code can be found \href{https://github.com/afnanmmir/Research-Paper-Summarizer}{here}.
 \end{abstract}
 
 \section{Introduction}
@@ -81,6 +82,67 @@ Parameters like \texttt{length\_penalty} and \texttt{early\_stopping} prevented 
 
 
 \section{Results and Evaluation}
+
+% \indent \indent Describe as clearly as possible what it is your system can and cannot do. You can show examples of things your system is getting correct and of errors it is making. If applicable, measure performance by some performance metric.
+
+\indent \indent The performance of the model was measured through two primary methods. The first method utilized the comparison of numerical metrics such as the Flesch, Dale Chall, and Rouge scores \cite{lin-2004-rouge}. Essentially, these metrics measure various qualities of summaries, such as unigrams, bigrams, length of sequences, number of syllabus, difficulty of words, etc. However, since the readers of the summaries are ultimately people, using human evaluation is important.
+
+\subsection{Metrics}
+
+\indent \indent After running the various metrics, here are the results of the predicted summaries compared to the original abstracts and original summaries. Although the original text performed better than the predicted text, the predicted text was fairly close in metrics such as Dale Chall, which measures the difficulty of the words in the text, as well as Rouge1 and Rouge2 which specifically looks at the overlap of unigrams and bigrams respectively.
+
+\begin{table}[!htbp]
+  \hspace{1.1cm}
+  \begin{tabular}{|c | c | c | c|} 
+    \hline
+    Metrics Averaged & Predicted Summaries & Original Abstracts & Original Summaries \\ [1ex] 
+    \hline\hline
+    Flesch & 16.8523 & 27.4492 & 29.3275 \\ [1ex]
+    \hline
+    Dale Chall & 12.2706 & 11.0360 & 10.8992 \\ [1ex]
+    \hline
+    Dale Chall v2 & 10.8840 & 9.6439 & 9.7807 \\ [1ex]
+    \hline
+    Rouge1 & 0.4036 & 0.4987 & 0.4731 \\ [1ex]
+    \hline
+    Rouge2 & 0.1249 & 0.1785 & 0.1473 \\ [1ex] 
+    \hline
+    RougeL & 0.2140 & 0.4602 & 0.4308 \\ [1ex] 
+    \hline
+  \end{tabular}
+\end{table}    
+
+
+\subsection{Human Evaluation}
+
+\indent \indent As aforementioned, the second method for evaluating results was using human evaluation. This involved showing an evaluator a predicted summary and the technical abstract side by side. The specific side that the text was shown on was randomized. Then the evaluator would select which side they thought was easier to read. Here are the results:
+
+% \begin{figure}[!htbp]
+  % \centering
+  % \includegraphics[width=500pt, height=300pt]{human_evaluation_results.png}
+  % \caption{Human Evaluation Results}
+% \end{figure}
+
+\begin{table}[!htbp]
+  \begin{tabular}{|c | c|} 
+   \hline
+   Text & Votes \\ [1ex] 
+   \hline\hline
+   Technical Abstract & 23 \\ [1ex]
+   \hline
+   Generated Summaries & 20 \\ [1ex]
+   \hline
+  \end{tabular}
+\end{table}
+
+
+\indent \indent As shown above, approximately 46\% humans preferred the generated summaries over the technical abstracts. This is a fairly good result, considering that the model was only trained for 3 epochs, and the model was only finetuned on a small subset of the data. With more training and more data, the model may be able to perform better.
+
+\section{Future Work}
+
+\indent \indent Upon reflection, there were a few evident reasons for the performance of the model. Firstly, the model was only trained on the technical abstracts, which limited the information the predicted summaries was able to capture. Thus, as next steps, the model would be trained on the techncal abstract as well as the introduction and the conclusion of the paper allowing the model to capture more information. Secondly, the model was only trained for 3 epochs, which is not enough to capture the nuances of the data. Thus, the model would be trained for more epochs. Lastly, other metrics would be used to evaluate the model, such as the RNPTC metric.
+
+\vspace{5.5cm}
 
 \bibliography{naaclhlt2019}
 \bibliographystyle{acl_natbib}
