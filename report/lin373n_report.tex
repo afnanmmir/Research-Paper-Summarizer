@@ -53,9 +53,7 @@
 \indent \indent Research papers are groundbreaking in terms of presenting new findings, theories, and perspectives, making them essential for scientific breakthroughs. However, the knowledge presented in research papers is often inaccessible to the general public for various reasons. Reasons include putting research papers behind paywalls, using dense technical language that the average person cannot understand, and sometimes simply being far too long. This discourages those in the general public who may be interested in the topic of the research paper or those who would like to enter the research area presented in the paper from reading the paper. Though the first issue is not one that can be solved without a change in the current publishing system, the latter two issues can be addressed by using Natural Language Processing (NLP) methods to automatically generate summaries of research papers that are easier to read than the average technical abstract. This would involve finetuning a pretrained model on a dataset to convert the paper and its technical abstract into a plain language summary, which, to some extent, would take down the barrier of technical language and length.
 \section{Dataset and Resources}
 \subsection{Dataset}
-\indent \indent To train and evaluate the model, a dataset of research papers in the biomedical domain was used. This dataset contains 28,124 research papers, each with an associated technical abstract and a plain language summary. The technical abstract is the abstract that is typically found in research papers, but the plain language summary is a summary that is written by the author, where they are required to highlight how the work fits into a broader context in a simple manner without complex acronyms and terminology \cite{luo2022readability}. The dataset was split into the train set, the validation set, and the test set, with 26,124, 1,000, and 1,000 papers respectively. The dataset can be found \href{https://www.dropbox.
-com/s/huwm01glsk9fou0/plos_readability_ctrl_sum_
-corpus.rar?dl=0}{here}.
+\indent \indent To train and evaluate the model, a dataset of research papers in the biomedical domain was used. This dataset contains 28,124 research papers, each with an associated technical abstract and a plain language summary. The technical abstract is the abstract that is typically found in research papers, but the plain language summary is a summary that is written by the author, where they are required to highlight how the work fits into a broader context in a simple manner without complex acronyms and terminology \cite{luo2022readability}. The dataset was split into the train set, the validation set, and the test set, with 26,124, 1,000, and 1,000 papers respectively. The dataset can be found \href{https://www.dropbox.com/s/huwm01glsk9fou0/plos_readability_ctrl_sum_corpus.rar?dl=0}{here}.
 
 \subsection{Model Resources}
 
@@ -90,7 +88,7 @@ Parameters like \texttt{length\_penalty} and \texttt{early\_stopping} prevented 
 
 \subsection{Metrics}
 
-\indent \indent After running the various metrics, here are the results of the predicted summaries compared to the original abstracts and original summaries. Although the original text performed better than the predicted text, the predicted text was fairly close in metrics such as Dale Chall, which measures the difficulty of the words in the text, as well as Rouge1 and Rouge2 which specifically looks at the overlap of unigrams and bigrams respectively. The Rouge metrics were compared to the original Rouge scores generated in the original paper this dataset was used in \cite{luo2022readability}. The results of the metrics are shown in the following table:
+\indent \indent After running the various metrics, shown above are the results of the predicted summaries compared to the original abstracts and original summaries. Although the original text performed better than the predicted text, the predicted text was fairly close in metrics such as Dale Chall, which measures the difficulty of the words in the text, as well as Rouge1 and Rouge2 which specifically looks at the overlap of unigrams and bigrams respectively. The Rouge metrics were compared to the original Rouge scores generated in the original paper this dataset was used in \cite{luo2022readability}.
 
 \begin{table}
   \begin{center}
@@ -154,11 +152,21 @@ A bottleneck that may have led to many of these issues was the lack of resources
 \appendix
 
 \section{Group Work Split}
-For this project, Afnan took responsibility of formatting the data properly to be ingested by the model. He also took responsibility of training the model on Google Colab. Jaykumar took responsibility of generating the summaries for the test set, which also included tuning the parameters of the finetuned model to generate the most coherent model. He also worked on creating the demo for the class presentation. Both Afnan and Jaykumar worked on performing the evaluation of the summaries generated, and they both worked on the presentation and writing the
+\indent \indent For this project, Afnan took responsibility of formatting the data properly to be ingested by the model. He also took responsibility of training the model on Google Colab. Jaykumar took responsibility of generating the summaries for the test set, which also included tuning the parameters of the finetuned model to generate the most coherent model. He also worked on creating the demo for the class presentation. Both Afnan and Jaykumar worked on performing the evaluation of the summaries generated, and they both worked on the presentation and writing this report.
+
+\newpage
+
+\section{Additional Links}
+
+Link to: \href{https://github.com/afnanmmir/Research-Paper-Summarizer}{Code}
+
+\par
+
+\noindent Link to: \href{https://www.dropbox.com/s/huwm01glsk9fou0/plos_readability_ctrl_sum_corpus.rar?dl=0}{data on Dropbox}
+
 
 \bibliography{naaclhlt2019}
 \bibliographystyle{acl_natbib}
-
 
 
 
